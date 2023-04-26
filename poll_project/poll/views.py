@@ -4,14 +4,18 @@ from .models import Poll
 from django.http import HttpResponse
 
 # Create your views here.
+
 def home(request): #define one home for home.html that takes in a request
     polls = Poll.objects.all() #will give you all the polls from the DB
+
     context = {
         'polls' : polls
         }
+    
     return render(request, 'poll/home.html', context) #return poll directory and name of home.html 
 
 def create(request): 
+
     if request.method == 'POST':
         form = CreatePollForm(request.POST) #instantiate the form and pass in the POST data
         if form.is_valid():
@@ -24,9 +28,10 @@ def create(request):
     context = {
         'form' : form #passing form into context which then goes to the template
     }
-    return render(request, 'poll/create.html', context)
+    return render(request, 'poll/create.html', context) 
 
 def vote(request, poll_id): #vote and result have to work with specific pole, thus we have pole_id
+
     poll = Poll.objects.get(pk = poll_id) #query for particular poll for id being passed in, primary key is poll_id
 
     if request.method == 'POST': #check if it is a post request (submit)
@@ -37,6 +42,10 @@ def vote(request, poll_id): #vote and result have to work with specific pole, th
             poll.option_two_count += 1
         elif selected_option == 'option3':
             poll.option_three_count += 1
+        elif selected_option == 'option4':
+            poll.option_four_count += 1
+        elif selected_option == 'option5':
+            poll.option_five_count += 1
         else:
             return HttpResponse(400, 'Invalid Form')
         
