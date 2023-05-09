@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect #render combines a given template 
 from .forms import CreatePollForm
 from .models import Poll
 from django.http import HttpResponse
+from django.utils import timezone
+
 
 # Create your views here.
 
@@ -34,6 +36,13 @@ def vote(request, poll_id): #vote and result have to work with specific pole, th
 
     poll = Poll.objects.get(pk = poll_id) #query for particular poll for id being passed in, primary key is poll_id
 
+    #check if poll is still active
+    current_time = timezone.now() #what is the current date+time?
+    end_time = poll.start_time + poll.poll_duration #poll end date+time
+    if current_time > end_time: #if we are past the end time
+        return render(request, 'poll/poll_closed.html') #return page that says poll is closed
+
+    #if submit is clicked = handle form submission and vote counting
     if request.method == 'POST': #check if it is a post request (submit)
         selected_option = request.POST['poll'] #displays which option was selected after clicking submit
         if selected_option == 'option1':
@@ -56,6 +65,7 @@ def vote(request, poll_id): #vote and result have to work with specific pole, th
     context = {
         'poll' : poll
     }
+
     return render(request, 'poll/vote.html', context)
 
 def results(request, poll_id): #vote and result have to work with specific pole, thus we have pole_id
