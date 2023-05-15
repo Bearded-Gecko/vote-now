@@ -119,7 +119,20 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+#import sensitive email info variables to send out poll results (Need to create separate local_settings.py file with email info)
+try:
+    from .local_settings import *
+except ImportError:
+    pass
+
+
+

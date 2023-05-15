@@ -26,6 +26,17 @@
                 Total &mdash; <strong>{{ poll.total }}</strong>
             </div>
 
+            <form method="post">
+                {% csrf_token %}
+                <!-- add button to trigger email notification when poll is inactive -->
+                <!-- <button type="submit" name="notify_button">Email Results</button> -->
+                <button type="submit" class="btn btn-info">
+                Email Results
+                </button>
+            </form>
+            
+
+
         </div>
     </div>
 </div>

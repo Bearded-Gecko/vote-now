@@ -2,7 +2,10 @@ from django.shortcuts import render, redirect #render combines a given template 
 from .forms import CreatePollForm
 from .models import Poll
 from django.http import HttpResponse
-from django.utils import timezone
+from django.utils import timezone #for time-out feature
+from django.core.mail import send_mail #for notify-user feature
+import pandas as pd
+
 
 
 # Create your views here.
@@ -58,7 +61,7 @@ def vote(request, poll_id): #vote and result have to work with specific pole, th
         else:
             return HttpResponse(400, 'Invalid Form')
         
-        poll.save() #save result
+        poll.save() #save result to DB
 
         return redirect('results', poll.id) #return to results page via particular poll id
 
@@ -70,7 +73,39 @@ def vote(request, poll_id): #vote and result have to work with specific pole, th
 
 def results(request, poll_id): #vote and result have to work with specific pole, thus we have pole_id
     poll = Poll.objects.get(pk = poll_id) #query for the poll in question
+
+    #format result output for email
+    options = [poll.option_one, poll.option_two, poll.option_three, poll.option_four, poll.option_five]
+    vote_counts = [poll.option_one_count, poll.option_two_count, poll.option_three_count, poll.option_four_count, poll.option_five_count]
+    df = pd.DataFrame({'Options': options, 'Votes': vote_counts}) #create dataframe from two lists of options and votes
+    df_sorted = df.sort_values('Votes', ascending = False) #sort in descending order
+    email_body = df_sorted.to_string(index=False) #convert df to string; do not include index
+    
+    email_subject = poll.question #question of poll
+
+    email_recipients = [poll.email_one, poll.email_two, poll.email_three, poll.email_four, poll.email_five] #list of receipients to email
+
+    #send email to users
+    if request.method == 'POST': #check if email results was clicked
+        current_time = timezone.now() #what is the current date+time?
+        end_time = poll.start_time + poll.poll_duration #poll end date+time
+        if current_time > end_time: #if we are past the end time
+            
+            #email results
+            send_mail(poll.question, #email subject
+            email_body, #body
+            'testing.mikeho@gmail.com', #from
+            email_recipients, #recipients
+            fail_silently = False
+            )
+
+            return render(request, 'poll/results_sent.html')
+        else:
+            return render(request, 'poll/still_active.html')
+
     context = {
         'poll' : poll #pass poll to context which goes to the template
     }
+
+
     return render(request, 'poll/results.html', context)

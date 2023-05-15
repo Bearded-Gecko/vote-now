@@ -22,6 +22,12 @@ class Poll(models.Model): #create poll model
     start_time = models.DateTimeField(default = datetime.now, blank = True) #date and time of when poll was created
     poll_duration = models.DurationField(default = timedelta(minutes = 60) ) #duration for poll to be active; default to 60 minutes, i.e., 01:00:00
 
+    #email addresses
+    email_one = models.EmailField(max_length = 254, default = 'na@email.com')
+    email_two = models.EmailField(max_length = 254, default = 'na@email.com')
+    email_three = models.EmailField(max_length = 254, default = 'na@email.com')
+    email_four = models.EmailField(max_length = 254, default = 'na@email.com')
+    email_five = models.EmailField(max_length = 254, default = 'na@email.com')
     
     def total(self):
         #used to display the total number of votes in a poll

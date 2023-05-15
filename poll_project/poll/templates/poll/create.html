@@ -61,11 +61,49 @@
                                 <!-- <input type="text" name="option5" id="option4" class="form-control" placeholder="Enter option 5" /> -->
                                 {% render_field form.option_five class="form-control" %}
                             </div>
+                            <br />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="poll_duration">Poll Duration (minutes)</label>
+                                {% render_field form.poll_duration class="form-control" %}
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="poll_duration">Email 1</label>
+                                {% render_field form.email_one class="form-control" %}
+                            </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label for="poll_duration">Poll Duration</label>
-                                {% render_field form.poll_duration class="form-control" %}
+                                <label for="poll_duration">Email 2</label>
+                                {% render_field form.email_two class="form-control" %}
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="poll_duration">Email 3</label>
+                                {% render_field form.email_three class="form-control" %}
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="poll_duration">Email 4</label>
+                                {% render_field form.email_four class="form-control" %}
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="poll_duration">Email 5</label>
+                                {% render_field form.email_five class="form-control" %}
                             </div>
                         </div>
                     </div>
