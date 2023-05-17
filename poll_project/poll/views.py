@@ -94,7 +94,7 @@ def results(request, poll_id): #vote and result have to work with specific pole,
             #email results
             send_mail(poll.question, #email subject
             email_body, #body
-            'testing.mikeho@gmail.com', #from
+            'testing', #from
             email_recipients, #recipients
             fail_silently = False
             )
