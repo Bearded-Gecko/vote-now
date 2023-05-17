@@ -10,6 +10,10 @@ TBD
 
 ## EXECUTION
 
-TBD
+In Progress
+
+Base functionality was made using the following tutorial: https://www.youtube.com/watch?v=RMTVAIVrdtM
+
+Hosting was implemented by using the following tutorial: https://www.youtube.com/watch?v=AgTr5mw4zdI&list=LL&index=1&t=1504s
 
 
