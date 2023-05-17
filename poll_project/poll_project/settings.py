@@ -11,16 +11,22 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load in environment variables
+import environ
+env = environ.Env() #initialize environment variables with environ
+env.read_env(os.path.join(BASE_DIR, 'poll_project/env', '.env')) #read in environment variables
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-c4d4)ei5*3n)tc-86nm4vm=*4-tycb*)^4rc9h(3%fqv6*z*fp"
+SECRET_KEY = env('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -75,12 +81,25 @@ WSGI_APPLICATION = "poll_project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+#SQLite single-database setup
+'''
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+'''
+
+# Render PostgreSSQL database (Live)
+import dj_database_url
+
+DATABASES = {
+    
+    'default': dj_database_url.parse(env('DATABASE_URL'))
+
+}
+
 
 
 # Password validation
@@ -120,19 +139,16 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 
-
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
-#import sensitive email info variables to send out poll results (Need to create separate local_settings.py file with email info)
-try:
-    from .local_settings import *
-except ImportError:
-    pass
-
-
+#import 
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = eval(env('EMAIL_USE_TLS')) #evaluate strings to boolean
+EMAIL_USE_SSL = eval(env('EMAIL_USE_SSL')) #evaluate strings to boolean
 
